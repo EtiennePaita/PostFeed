@@ -1,36 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:post_feed/home_screen/models/post.dart';
+import 'package:post_feed/home_screen/post_bloc/posts_bloc.dart';
+import 'package:post_feed/home_screen/post_bloc/posts_event.dart';
+import 'package:post_feed/home_screen/post_bloc/posts_state.dart';
 import 'package:post_feed/home_screen/post_item.dart';
+import 'package:post_feed/home_screen/repository/posts_repository.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('PostFeed'),
-      ),
-      body: Column(
-        children: [
-          PostItem(
-            post: Post(
-              id: 'SUUU',
-              title: 'My first post !',
-              description: '#firstTime #ecxiting #blog',
-              content: 'This is my first post ever ! I will post regularly contents about me, about my dog and about my golden fish Charlysh. Stay awake ! :)',
-            ),
-          )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.post_add),
-        onPressed: () => _onAddPostClick(),
-      ),
+    return BlocProvider(
+      create: (context) => PostsBloc(
+        repository: RepositoryProvider.of<PostsRepository>(context),
+      )..add(GetAllPosts()),
+      child: Builder(builder: (context) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('PostFeed'),
+          ),
+          body: BlocBuilder<PostsBloc, PostsState>(
+            builder: (context, state) {
+              switch (state.status) {
+                case PostStatus.initial:
+                  return const SizedBox();
+
+                case PostStatus.loading:
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+
+                case PostStatus.error:
+                  return Center(
+                    child: Text(state.error),
+                  );
+
+                case PostStatus.success:
+                  final posts = state.posts;
+
+                  if (posts.isEmpty) {
+                    return const Center(
+                      child: Text('Aucun post'),
+                    );
+                  }
+
+                  return ListView.builder(
+                    itemCount: posts.length,
+                    itemBuilder: (context, index) {
+                      final post = posts[index];
+                      return PostItem(
+                        post: post,
+                        onTap: () => _onPostTap(post),
+                      );
+                    },
+                  );
+              }
+            },
+          ),
+          floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.post_add),
+            onPressed: () => _onAddPostClick(),
+          ),
+        );
+      }),
     );
   }
 
   void _onAddPostClick() {
+    debugPrint("_onAddPostClick");
+    //navigate to add post form
+  }
+
+  void _onPostTap(Post post) {
     debugPrint("_onAddPostClick");
     //navigate to add post form
   }

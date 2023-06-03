@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:post_feed/home_screen/data_sources/api_posts_data_source.dart';
+import 'package:post_feed/home_screen/repository/posts_repository.dart';
 
 import 'home_screen/home_screen.dart';
 
@@ -12,15 +15,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return RepositoryProvider(
+      create: (context) => PostsRepository(
+          postsDataSource: ApiPostsDataSource()
       ),
-      routes: {
-        '/': (context) => const HomeScreen(),
-      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        routes: {
+          '/': (context) => const HomeScreen(),
+        },
+      ),
     );
   }
 }
