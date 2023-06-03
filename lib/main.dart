@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:post_feed/home_screen/data_sources/api_posts_data_source.dart';
 import 'package:post_feed/home_screen/repository/posts_repository.dart';
+import 'package:post_feed/post_creation_screen/post_creation_screen.dart';
 import 'package:post_feed/post_detail_screen/post_detail_screen.dart';
 
 import 'home_screen/home_screen.dart';
@@ -39,6 +40,10 @@ class MyApp extends StatelessWidget {
               if (arguments is Post) {
                 content = PostDetailScreen(post: arguments);
               }
+              break;
+
+            case PostCreationScreen.routeName:
+              content = const PostCreationScreen();
               break;
           }
 

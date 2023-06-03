@@ -6,6 +6,7 @@ import 'package:post_feed/home_screen/post_bloc/posts_event.dart';
 import 'package:post_feed/home_screen/post_bloc/posts_state.dart';
 import 'package:post_feed/home_screen/post_item.dart';
 import 'package:post_feed/home_screen/repository/posts_repository.dart';
+import 'package:post_feed/post_creation_screen/post_creation_screen.dart';
 import 'package:post_feed/post_detail_screen/post_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -48,7 +49,10 @@ class HomeScreen extends StatelessWidget {
                   }
 
                   return Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10.0,
+                      horizontal: 20.0,
+                    ),
                     child: ListView.builder(
                       itemCount: posts.length,
                       itemBuilder: (context, index) {
@@ -65,16 +69,15 @@ class HomeScreen extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.post_add),
-            onPressed: () => _onAddPostClick(),
+            onPressed: () => _onAddPostClick(context),
           ),
         );
       }),
     );
   }
 
-  void _onAddPostClick() {
-    debugPrint("_onAddPostClick");
-    //navigate to add post form
+  void _onAddPostClick(BuildContext context) {
+    PostCreationScreen.navigateTo(context);
   }
 
   void _onPostTap(BuildContext context, Post post) {
