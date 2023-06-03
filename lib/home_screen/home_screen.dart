@@ -6,6 +6,7 @@ import 'package:post_feed/home_screen/post_bloc/posts_event.dart';
 import 'package:post_feed/home_screen/post_bloc/posts_state.dart';
 import 'package:post_feed/home_screen/post_item.dart';
 import 'package:post_feed/home_screen/repository/posts_repository.dart';
+import 'package:post_feed/post_detail_screen/post_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -54,7 +55,7 @@ class HomeScreen extends StatelessWidget {
                         final post = posts[index];
                         return PostItem(
                           post: post,
-                          onTap: () => _onPostTap(post),
+                          onTap: () => _onPostTap(context, post),
                         );
                       },
                     ),
@@ -76,8 +77,8 @@ class HomeScreen extends StatelessWidget {
     //navigate to add post form
   }
 
-  void _onPostTap(Post post) {
-    debugPrint("_onAddPostClick");
+  void _onPostTap(BuildContext context, Post post) {
+    PostDetailScreen.navigateTo(context, post);
     //navigate to add post form
   }
 }
