@@ -46,15 +46,18 @@ class HomeScreen extends StatelessWidget {
                     );
                   }
 
-                  return ListView.builder(
-                    itemCount: posts.length,
-                    itemBuilder: (context, index) {
-                      final post = posts[index];
-                      return PostItem(
-                        post: post,
-                        onTap: () => _onPostTap(post),
-                      );
-                    },
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView.builder(
+                      itemCount: posts.length,
+                      itemBuilder: (context, index) {
+                        final post = posts[index];
+                        return PostItem(
+                          post: post,
+                          onTap: () => _onPostTap(post),
+                        );
+                      },
+                    ),
                   );
               }
             },
