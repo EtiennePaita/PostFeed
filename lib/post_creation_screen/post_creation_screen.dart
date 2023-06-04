@@ -78,3 +78,79 @@ class PostFormWidget extends StatelessWidget {
     );
   }
 }
+
+class PostForm extends StatefulWidget {
+  final VoidCallback? formValidationCallback;
+  final String? title;
+  final String? description;
+  final String? content;
+
+  const PostForm({
+    super.key,
+    required this.formValidationCallback,
+    this.title,
+    this.description,
+    this.content
+  });
+
+  @override
+  State<PostForm> createState() => PostFormState();
+}
+
+
+class PostFormState extends State<PostForm> {
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final contentController = TextEditingController();
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    contentController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(top: 10.0),
+          child: Text('Title'),
+        ),
+        TextField(
+          controller: titleController,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'Enter your post title',
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: 10.0),
+          child: Text('Description'),
+        ),
+        TextField(
+          controller: descriptionController,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: '#healthy #sport #lifestyle',
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: 10.0),
+          child: Text('Post content'),
+        ),
+        TextField(
+          controller: contentController,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+          ),
+          maxLines: null,
+          minLines: null,
+        ),
+      ],
+    );
+  }
+}
