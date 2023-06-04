@@ -1,6 +1,5 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import '../home_screen/models/post.dart';
+import '../../models/post.dart';
 
 class PostDetailScreen extends StatelessWidget {
   static const String routeName = '/PostDetailScreen';

@@ -1,4 +1,5 @@
-import 'package:post_feed/home_screen/models/post.dart';
+
+import '../../models/post.dart';
 
 enum PostStatus {
   initial,

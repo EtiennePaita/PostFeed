@@ -1,6 +1,7 @@
 import 'package:post_feed/home_screen/data_sources/posts_data_source.dart';
 
-import '../models/post.dart';
+import '../../models/post.dart';
+
 
 class ApiPostsDataSource extends PostsDataSource {
   @override

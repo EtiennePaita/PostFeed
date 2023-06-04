@@ -12,7 +12,7 @@ import 'analytics/analytics_provider.dart';
 import 'analytics/firebase_analytics_handler.dart';
 import 'firebase_options.dart';
 import 'home_screen/home_screen.dart';
-import 'home_screen/models/post.dart';
+import '../../models/post.dart';
 
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
