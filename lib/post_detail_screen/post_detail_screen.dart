@@ -1,5 +1,5 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-
 import '../home_screen/models/post.dart';
 
 class PostDetailScreen extends StatelessWidget {
@@ -25,7 +25,7 @@ class PostDetailScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
-              onPressed: () { _onEditClick(context); },
+              onPressed: () => _onEditClick(context),
               icon: const Icon(Icons.edit, size: 20.0,),
             ),
           ),
@@ -51,7 +51,12 @@ class PostDetailScreen extends StatelessWidget {
   }
 
   void _onEditClick(BuildContext context) {
-
+    throw Exception('Crash test on post ${post.title}');
+    /*try {
+      throw Exception('Crash test on post ${post.title}');
+    } catch (error, stackTrace) {
+      await FirebaseCrashlytics.instance.recordError(error, stackTrace);
+    }*/
   }
 
 }

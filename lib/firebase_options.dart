@@ -53,6 +53,7 @@ class DefaultFirebaseOptions {
     projectId: 'postfeed-b1dea',
     authDomain: 'postfeed-b1dea.firebaseapp.com',
     storageBucket: 'postfeed-b1dea.appspot.com',
+    measurementId: 'G-HW37DPGG0N',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
