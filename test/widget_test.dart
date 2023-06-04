@@ -6,25 +6,33 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:post_feed/home_screen/home_screen.dart';
+import 'package:post_feed/home_screen/post_bloc/posts_bloc.dart';
+import 'package:post_feed/home_screen/repository/posts_repository.dart';
 
-import 'package:post_feed/main.dart';
+import 'tests_data_source.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+  testWidgets('Empty list', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      RepositoryProvider(
+        create: (context) => PostsRepository(
+          postsDataSource: EmptyPostsDataSource(),
+        ),
+        child: BlocProvider<PostsBloc>(
+          create: (context) => PostsBloc(
+            repository : RepositoryProvider.of<PostsRepository>(context),
+          ),
+          child: const MaterialApp(
+            home: HomeScreen(),
+          ),
+        ),
+      ),
+    );
     await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text("Aucun post"), findsOneWidget);
   });
 }
