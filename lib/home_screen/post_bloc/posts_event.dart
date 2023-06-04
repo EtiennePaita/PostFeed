@@ -13,3 +13,9 @@ class AddPost extends PostsEvent {
 
   AddPost(this.newPost);
 }
+
+class EditPost extends PostsEvent {
+  final Post post;
+
+  EditPost(this.post);
+}

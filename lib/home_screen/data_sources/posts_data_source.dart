@@ -5,4 +5,5 @@ import '../../models/post.dart';
 abstract class PostsDataSource {
   Stream<List<Post>> getPosts();
   Future<DocumentReference<Object?>> addPost(Post post);
+  Future<void> editPost(Post post);
 }

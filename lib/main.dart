@@ -96,17 +96,21 @@ class MyApp extends StatelessWidget {
             },
             onGenerateRoute: (settings) {
               Widget content = const SizedBox.shrink();
+              final arguments = settings.arguments;
 
               switch (settings.name) {
                 case PostDetailScreen.routeName:
-                  final arguments = settings.arguments;
                   if (arguments is Post) {
                     content = PostDetailScreen(post: arguments);
                   }
                   break;
 
                 case PostCreationScreen.routeName:
-                  content = const PostCreationScreen();
+                  if (arguments is Post?) {
+                    content = PostCreationScreen(post: arguments);
+                  } else {
+                    content = const PostCreationScreen();
+                  }
                   break;
               }
 

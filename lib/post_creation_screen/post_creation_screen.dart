@@ -8,22 +8,18 @@ import 'package:post_feed/models/post.dart';
 
 class PostCreationScreen extends StatefulWidget {
   final VoidCallback? formValidationCallback;
-  final String? title;
-  final String? description;
-  final String? content;
+  final Post? post;
 
   static const String routeName = '/PostCreationScreen';
 
-  static void navigateTo(BuildContext context) {
-    Navigator.of(context).pushNamed(routeName);
+  static void navigateTo(BuildContext context, Post? post) {
+    Navigator.of(context).pushNamed(routeName, arguments: post);
   }
 
   const PostCreationScreen({
     super.key,
     this.formValidationCallback,
-    this.title,
-    this.description,
-    this.content,
+    this.post
   });
 
   @override
@@ -35,6 +31,7 @@ class PostFormState extends State<PostCreationScreen> {
   final descriptionController = TextEditingController();
   final contentController = TextEditingController();
 
+
   @override
   void dispose() {
     titleController.dispose();
@@ -43,12 +40,21 @@ class PostFormState extends State<PostCreationScreen> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    super.initState();
+    if(widget.post != null) {
+      titleController.text = widget.post?.title ?? '';
+      contentController.text = widget.post?.content ?? '';
+      descriptionController.text = widget.post?.description ?? '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create a post !'),
+        title: widget.post != null ? const Text('Edit') : const Text('Create a post !'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -103,7 +109,15 @@ class PostFormState extends State<PostCreationScreen> {
                     break;
 
                   case PostStatus.success:
-                    _showSnackBar(context, 'Votre post a été ajouté !');
+                    titleController.clear();
+                    descriptionController.clear();
+                    contentController.clear();
+                    if(widget.post != null) {
+                      _showSnackBar(context, 'Votre post a été modifié !');
+                    } else {
+                      _showSnackBar(context, 'Votre post a été ajouté !');
+                    }
+                    //Navigator.of(context).pop();
                     break;
 
                   case PostStatus.initial:
@@ -113,7 +127,6 @@ class PostFormState extends State<PostCreationScreen> {
                 }
               },
               builder: (context, state) {
-
                 switch (state.status) {
                   case PostStatus.loading:
                     return const Center(
@@ -127,8 +140,8 @@ class PostFormState extends State<PostCreationScreen> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 30.0),
                         child: ElevatedButton(
-                          onPressed: () => _onCreatePostClick(context),
-                          child: const Text('Post'),
+                          onPressed: () => widget.post != null ? _onEditPostClick(context) : _onCreatePostClick(context),
+                          child: widget.post != null ? const Text('Edit') : const Text('Create'),
                         ),
                       ),
                     );
@@ -150,6 +163,16 @@ class PostFormState extends State<PostCreationScreen> {
       content: contentController.text,
     );
     BlocProvider.of<PostsBloc>(context).add(AddPost(newPost));
+  }
+
+  void _onEditPostClick(BuildContext context) {
+    final newPost = Post(
+      id: widget.post?.id ?? '',
+      title: titleController.text,
+      description: descriptionController.text,
+      content: contentController.text,
+    );
+    BlocProvider.of<PostsBloc>(context).add(EditPost(newPost));
   }
 
   void _showSnackBar(BuildContext context, String text) {

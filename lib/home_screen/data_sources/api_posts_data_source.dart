@@ -27,4 +27,13 @@ class ApiPostsDataSource extends PostsDataSource {
       "content": post.content
     });
   }
+
+  @override
+  Future<void> editPost(Post post) async {
+    return await postCollection.doc(post.id).update({
+      'title': post.title,
+      'description': post.description,
+      'content': post.content,
+    });
+  }
 }

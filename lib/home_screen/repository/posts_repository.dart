@@ -25,4 +25,8 @@ class PostsRepository {
       rethrow;
     }
   }
+
+  Future<void> editPost(Post post) {
+    return postsDataSource.editPost(post);
+  }
 }

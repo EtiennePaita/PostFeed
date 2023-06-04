@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   void _onAddPostClick(BuildContext context) {
-    PostCreationScreen.navigateTo(context);
+    PostCreationScreen.navigateTo(context, null);
   }
 
   void _onPostTap(BuildContext context, Post post) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/post.dart';
+import '../post_creation_screen/post_creation_screen.dart';
 
 class PostDetailScreen extends StatelessWidget {
   static const String routeName = '/PostDetailScreen';
@@ -50,12 +51,7 @@ class PostDetailScreen extends StatelessWidget {
   }
 
   void _onEditClick(BuildContext context) {
-    throw Exception('Crash test on post ${post.title}');
-    /*try {
-      throw Exception('Crash test on post ${post.title}');
-    } catch (error, stackTrace) {
-      await FirebaseCrashlytics.instance.recordError(error, stackTrace);
-    }*/
+    PostCreationScreen.navigateTo(context, post);
   }
 
 }
