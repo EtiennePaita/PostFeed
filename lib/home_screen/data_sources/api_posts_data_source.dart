@@ -4,26 +4,35 @@ import 'package:post_feed/home_screen/data_sources/posts_data_source.dart';
 import '../../models/post.dart';
 
 class ApiPostsDataSource extends PostsDataSource {
+  final CollectionReference postCollection =
+      FirebaseFirestore.instance.collection('posts');
+
+  //final data = doc.data() as Map<String, dynamic>;
+  //
+  //         return Post(
+  //           id: doc.id,
+  //           title: data['title'],
+  //           description: data['description'],
+  //         );
+
   @override
-  Future<List<Post>> getPosts() async {
-    await Future.delayed(const Duration(seconds: 2));
-    return List.generate(10, (index) {
-      return Post(
-        id: 'P$index',
-        title: 'MYL Blog #${index + 1}',
-        description: '#firstTime #ecxiting #blog',
-        content:
-            'This is my first post ever ! I will post regularly contents about me, about my dog and about my golden fish Charlysh. Stay awake ! :)',
-      );
-    });
+  Stream<List<Post>> getPosts() {
+    return postCollection.snapshots().map((snapshot) => snapshot.docs
+        .map((doc) => Post(
+              id: doc.id,
+              title: doc.get('title'),
+              description: doc.get('description'),
+              content: doc.get('content'),
+            ))
+        .toList());
   }
 
   @override
   Future<DocumentReference<Object?>> addPost(Post post) async {
-    final CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection('posts');
-
-    return await usersCollection
-        .add({"title": post.title, "description": post.description, "content": post.content});
+    return await postCollection.add({
+      "title": post.title,
+      "description": post.description,
+      "content": post.content
+    });
   }
 }

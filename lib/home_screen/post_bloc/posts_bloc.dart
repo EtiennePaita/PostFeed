@@ -11,8 +11,9 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       emit(state.copyWith(status: PostStatus.loading));
 
       try {
-        final posts = await repository.getPosts();
-        emit(state.copyWith(status: PostStatus.success, posts: posts));
+        await for (var posts in repository.getPosts()) {
+          emit(state.copyWith(posts: posts, status: PostStatus.success));
+        }
       } catch (error, stackTrace) {
         emit(state.copyWith(
           status: PostStatus.error,
