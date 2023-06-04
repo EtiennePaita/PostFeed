@@ -37,6 +37,13 @@
             {
               "client_id": "274834559762-veht8t2eca0brnsl88kvrrp4qupi9l6r.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "274834559762-ngcdc26eskpna28mi4ct7ggg5j6q677v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ep.postFeed"
+              }
             }
           ]
         }
