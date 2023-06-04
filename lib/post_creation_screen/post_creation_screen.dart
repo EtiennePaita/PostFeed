@@ -117,7 +117,9 @@ class PostFormState extends State<PostCreationScreen> {
                     } else {
                       _showSnackBar(context, 'Votre post a été ajouté !');
                     }
-                    //Navigator.of(context).pop();
+
+                    Navigator.popUntil(context, ModalRoute.withName('/'));
+
                     break;
 
                   case PostStatus.initial:
