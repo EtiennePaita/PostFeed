@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:post_feed/home_screen/data_sources/posts_data_source.dart';
 
 import '../../models/post.dart';
-
 
 class ApiPostsDataSource extends PostsDataSource {
   @override
@@ -12,8 +12,18 @@ class ApiPostsDataSource extends PostsDataSource {
         id: 'P$index',
         title: 'MYL Blog #${index + 1}',
         description: '#firstTime #ecxiting #blog',
-        content: 'This is my first post ever ! I will post regularly contents about me, about my dog and about my golden fish Charlysh. Stay awake ! :)',
+        content:
+            'This is my first post ever ! I will post regularly contents about me, about my dog and about my golden fish Charlysh. Stay awake ! :)',
       );
     });
+  }
+
+  @override
+  Future<DocumentReference<Object?>> addPost(Post post) async {
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('posts');
+
+    return await usersCollection
+        .add({"title": post.title, "description": post.description, "content": post.content});
   }
 }

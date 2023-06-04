@@ -13,8 +13,29 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       try {
         final posts = await repository.getPosts();
         emit(state.copyWith(status: PostStatus.success, posts: posts));
-      } catch (error) {
-        emit(state.copyWith(status: PostStatus.error, error: error.toString()));
+      } catch (error, stackTrace) {
+        emit(state.copyWith(
+          status: PostStatus.error,
+          error: error.toString(),
+          stackTrace: stackTrace,
+        ));
+      }
+    });
+
+    on<AddPost>((event, emit) async {
+      emit(state.copyWith(status: PostStatus.loading));
+      final newPost = event.newPost;
+
+      try {
+        final post = await repository.addPost(newPost);
+        print(post);
+        emit(state.copyWith(status: PostStatus.success));
+      } catch (error, stackTrace) {
+        emit(state.copyWith(
+          status: PostStatus.error,
+          error: error.toString(),
+          stackTrace: stackTrace,
+        ));
       }
     });
   }

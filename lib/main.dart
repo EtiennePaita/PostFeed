@@ -17,6 +17,9 @@ import '../../models/post.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 
+import 'home_screen/post_bloc/posts_bloc.dart';
+import 'home_screen/post_bloc/posts_event.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -69,46 +72,51 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return AnalyticsProvider(
       handlers: [
         FirebaseAnalyticsHandler(),
       ],
       child: RepositoryProvider(
-        create: (context) => PostsRepository(
-            postsDataSource: ApiPostsDataSource()
-        ),
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
+        create: (context) =>
+            PostsRepository(
+                postsDataSource: ApiPostsDataSource()
+            ),
+        child: BlocProvider(
+          create: (context) => PostsBloc(
+            repository: RepositoryProvider.of<PostsRepository>(context),
+          )..add(GetAllPosts()),
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            routes: {
+              '/': (context) => const HomeScreen(),
+            },
+            onGenerateRoute: (settings) {
+              Widget content = const SizedBox.shrink();
+
+              switch (settings.name) {
+                case PostDetailScreen.routeName:
+                  final arguments = settings.arguments;
+                  if (arguments is Post) {
+                    content = PostDetailScreen(post: arguments);
+                  }
+                  break;
+
+                case PostCreationScreen.routeName:
+                  content = const PostCreationScreen();
+                  break;
+              }
+
+              return MaterialPageRoute(
+                builder: (context) {
+                  return content;
+                },
+              );
+            },
           ),
-          routes: {
-            '/': (context) => const HomeScreen(),
-          },
-          onGenerateRoute: (settings) {
-            Widget content = const SizedBox.shrink();
-
-            switch (settings.name) {
-              case PostDetailScreen.routeName:
-                final arguments = settings.arguments;
-                if (arguments is Post) {
-                  content = PostDetailScreen(post: arguments);
-                }
-                break;
-
-              case PostCreationScreen.routeName:
-                content = const PostCreationScreen();
-                break;
-            }
-
-            return MaterialPageRoute(
-              builder: (context) {
-                return content;
-              },
-            );
-          },
         ),
       ),
     );
