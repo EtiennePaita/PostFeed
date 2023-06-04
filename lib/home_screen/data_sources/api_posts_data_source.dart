@@ -7,14 +7,6 @@ class ApiPostsDataSource extends PostsDataSource {
   final CollectionReference postCollection =
       FirebaseFirestore.instance.collection('posts');
 
-  //final data = doc.data() as Map<String, dynamic>;
-  //
-  //         return Post(
-  //           id: doc.id,
-  //           title: data['title'],
-  //           description: data['description'],
-  //         );
-
   @override
   Stream<List<Post>> getPosts() {
     return postCollection.snapshots().map((snapshot) => snapshot.docs
